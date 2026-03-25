@@ -1,0 +1,30 @@
+# Outputs (generated at runtime)
+outputs/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+dist/
+build/
+
+# Virtual environment
+.venv/
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Hugging Face model cache (optional — large)
+# Uncomment to ignore local model cache:
+# ~/.cache/huggingface/
