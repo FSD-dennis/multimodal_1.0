@@ -5,123 +5,123 @@ MULTIMODAL EARNINGS PREDICTION ENGINE — EVALUATION SUMMARY
 --- direction_1d (Direction / Classification) ---
   Accuracy  : 0.5625
   Precision : 0.5000
-  Recall    : 0.3810
-  F1 Score  : 0.4324
+  Recall    : 0.5714
+  F1 Score  : 0.5333
   Confusion Matrix:
-    [[19  8]
- [13  8]]
+    [[15 12]
+ [ 9 12]]
 
   Classification Report:
               precision    recall  f1-score   support
 
-           0       0.59      0.70      0.64        27
-           1       0.50      0.38      0.43        21
+           0       0.62      0.56      0.59        27
+           1       0.50      0.57      0.53        21
 
     accuracy                           0.56        48
-   macro avg       0.55      0.54      0.54        48
-weighted avg       0.55      0.56      0.55        48
+   macro avg       0.56      0.56      0.56        48
+weighted avg       0.57      0.56      0.56        48
 
   Per-ticker breakdown:
-    AAPL  : n=  6  accuracy=0.833
-    AMZN  : n=  6  accuracy=0.667
-    GOOGL : n=  6  accuracy=0.167
-    JPM   : n=  6  accuracy=0.667
-    META  : n=  6  accuracy=0.500
-    MSFT  : n=  6  accuracy=0.667
-    NVDA  : n=  6  accuracy=0.500
-    TSLA  : n=  6  accuracy=0.500
+    AAPL  : n=  6  accuracy=0.333
+    AMZN  : n=  6  accuracy=0.833
+    GOOGL : n=  6  accuracy=0.667
+    JPM   : n=  6  accuracy=0.333
+    META  : n=  6  accuracy=0.167
+    MSFT  : n=  6  accuracy=0.500
+    NVDA  : n=  6  accuracy=0.833
+    TSLA  : n=  6  accuracy=0.833
 
   Failure analysis (top-5 worst predictions):
+    META 2025-10-29 00:00:00  actual_ret=-0.1133  predicted_dir=1
     META 2025-07-30 00:00:00  actual_ret=+0.1125  predicted_dir=0
     META 2026-01-28 00:00:00  actual_ret=+0.1040  predicted_dir=0
-    AMZN 2025-10-30 00:00:00  actual_ret=+0.0958  predicted_dir=0
-    NVDA 2025-02-26 00:00:00  actual_ret=-0.0848  predicted_dir=1
-    TSLA 2025-07-23 00:00:00  actual_ret=-0.0820  predicted_dir=1
+    MSFT 2026-01-28 00:00:00  actual_ret=-0.0999  predicted_dir=1
+    MSFT 2025-01-29 00:00:00  actual_ret=-0.0618  predicted_dir=1
 
 
 --- magnitude_1d (Magnitude / Regression) ---
-  MAE       : 0.057336
-  RMSE      : 0.079803
-  R²        : -0.7718
-  IC (Spearman) : -0.0614  (p=0.6783)
+  MAE       : 0.046114
+  RMSE      : 0.061344
+  R²        : -0.0469
+  IC (Spearman) : 0.1245  (p=0.3991)
 
   Per-ticker breakdown:
-    AAPL  : n=  6  MAE=0.027300
-    AMZN  : n=  6  MAE=0.068504
-    GOOGL : n=  6  MAE=0.032677
-    JPM   : n=  6  MAE=0.018324
-    META  : n=  6  MAE=0.071509
-    MSFT  : n=  6  MAE=0.058664
-    NVDA  : n=  6  MAE=0.075787
-    TSLA  : n=  6  MAE=0.105923
+    AAPL  : n=  6  MAE=0.025504
+    AMZN  : n=  6  MAE=0.063032
+    GOOGL : n=  6  MAE=0.029484
+    JPM   : n=  6  MAE=0.024303
+    META  : n=  6  MAE=0.082947
+    MSFT  : n=  6  MAE=0.064813
+    NVDA  : n=  6  MAE=0.011067
+    TSLA  : n=  6  MAE=0.067759
 
   Failure analysis (top-5 worst predictions):
-    TSLA 2024-10-23 00:00:00  actual=+0.219190  predicted=-0.002107  error=+0.221297
-    NVDA 2025-02-26 00:00:00  actual=-0.084781  predicted=+0.126494  error=-0.211275
-    TSLA 2025-07-23 00:00:00  actual=-0.081970  predicted=+0.129281  error=-0.211251
-    NVDA 2026-02-25 00:00:00  actual=-0.054561  predicted=+0.140022  error=-0.194583
-    META 2025-07-30 00:00:00  actual=+0.112527  predicted=-0.012423  error=+0.124950
+    TSLA 2024-10-23 00:00:00  actual=+0.219190  predicted=+0.001406  error=+0.217784
+    META 2025-10-29 00:00:00  actual=-0.113348  predicted=+0.019685  error=-0.133032
+    META 2025-07-30 00:00:00  actual=+0.112527  predicted=-0.003020  error=+0.115547
+    MSFT 2026-01-28 00:00:00  actual=-0.099931  predicted=+0.013667  error=-0.113598
+    META 2026-01-28 00:00:00  actual=+0.104048  predicted=+0.008562  error=+0.095486
 
 
 --- direction_3d (Direction / Classification) ---
-  Accuracy  : 0.5417
-  Precision : 0.4545
-  Recall    : 0.2381
-  F1 Score  : 0.3125
+  Accuracy  : 0.5833
+  Precision : 0.5238
+  Recall    : 0.5238
+  F1 Score  : 0.5238
   Confusion Matrix:
-    [[21  6]
- [16  5]]
+    [[17 10]
+ [10 11]]
 
   Classification Report:
               precision    recall  f1-score   support
 
-           0       0.57      0.78      0.66        27
-           1       0.45      0.24      0.31        21
+           0       0.63      0.63      0.63        27
+           1       0.52      0.52      0.52        21
 
-    accuracy                           0.54        48
-   macro avg       0.51      0.51      0.48        48
-weighted avg       0.52      0.54      0.51        48
+    accuracy                           0.58        48
+   macro avg       0.58      0.58      0.58        48
+weighted avg       0.58      0.58      0.58        48
 
   Per-ticker breakdown:
-    AAPL  : n=  6  accuracy=0.667
+    AAPL  : n=  6  accuracy=0.167
     AMZN  : n=  6  accuracy=0.667
-    GOOGL : n=  6  accuracy=0.500
+    GOOGL : n=  6  accuracy=0.667
     JPM   : n=  6  accuracy=0.667
     META  : n=  6  accuracy=0.333
-    MSFT  : n=  6  accuracy=0.500
-    NVDA  : n=  6  accuracy=0.667
-    TSLA  : n=  6  accuracy=0.333
+    MSFT  : n=  6  accuracy=0.667
+    NVDA  : n=  6  accuracy=1.000
+    TSLA  : n=  6  accuracy=0.500
 
   Failure analysis (top-5 worst predictions):
-    TSLA 2024-10-23 00:00:00  actual_ret=+0.2287  predicted_dir=0
-    NVDA 2025-02-26 00:00:00  actual_ret=-0.1312  predicted_dir=1
+    MSFT 2026-01-28 00:00:00  actual_ret=-0.1210  predicted_dir=1
     AMZN 2025-10-30 00:00:00  actual_ret=+0.1187  predicted_dir=0
     META 2025-07-30 00:00:00  actual_ret=+0.1167  predicted_dir=0
-    MSFT 2025-04-30 00:00:00  actual_ret=+0.1035  predicted_dir=0
+    META 2025-04-30 00:00:00  actual_ret=+0.0916  predicted_dir=0
+    MSFT 2025-01-29 00:00:00  actual_ret=-0.0710  predicted_dir=1
 
 
 --- magnitude_3d (Magnitude / Regression) ---
-  MAE       : 0.064216
-  RMSE      : 0.090059
-  R²        : -0.4457
-  IC (Spearman) : 0.0051  (p=0.9725)
+  MAE       : 0.060700
+  RMSE      : 0.077548
+  R²        : -0.0719
+  IC (Spearman) : 0.1493  (p=0.3113)
 
   Per-ticker breakdown:
-    AAPL  : n=  6  MAE=0.039245
-    AMZN  : n=  6  MAE=0.064989
-    GOOGL : n=  6  MAE=0.035580
-    JPM   : n=  6  MAE=0.018862
-    META  : n=  6  MAE=0.080799
-    MSFT  : n=  6  MAE=0.071303
-    NVDA  : n=  6  MAE=0.097584
-    TSLA  : n=  6  MAE=0.105363
+    AAPL  : n=  6  MAE=0.048271
+    AMZN  : n=  6  MAE=0.061214
+    GOOGL : n=  6  MAE=0.039643
+    JPM   : n=  6  MAE=0.033124
+    META  : n=  6  MAE=0.100207
+    MSFT  : n=  6  MAE=0.079466
+    NVDA  : n=  6  MAE=0.039022
+    TSLA  : n=  6  MAE=0.084653
 
   Failure analysis (top-5 worst predictions):
-    NVDA 2025-02-26 00:00:00  actual=-0.131170  predicted=+0.108370  error=-0.239540
-    TSLA 2024-10-23 00:00:00  actual=+0.228692  predicted=+0.002606  error=+0.226086
-    TSLA 2025-04-22 00:00:00  actual=+0.197420  predicted=-0.004950  error=+0.202370
-    NVDA 2026-02-25 00:00:00  actual=-0.066885  predicted=+0.117135  error=-0.184019
-    AAPL 2025-05-01 00:00:00  actual=-0.069426  predicted=+0.094285  error=-0.163712
+    TSLA 2024-10-23 00:00:00  actual=+0.228692  predicted=+0.015432  error=+0.213259
+    TSLA 2025-04-22 00:00:00  actual=+0.197420  predicted=+0.007937  error=+0.189483
+    META 2025-10-29 00:00:00  actual=-0.151609  predicted=+0.015144  error=-0.166753
+    MSFT 2026-01-28 00:00:00  actual=-0.120964  predicted=+0.024169  error=-0.145134
+    META 2025-07-30 00:00:00  actual=+0.116742  predicted=-0.010849  error=+0.127590
 
 
 ========================================================================
@@ -136,7 +136,7 @@ REFLECTIONS: WHAT WORKED, WHAT FAILED, WHAT TO IMPROVE
 - Price features (momentum, vol, gap) are standard alpha signals.
 
 - direction_1d: accuracy = 56.2% (above random baseline)
-- direction_3d: accuracy = 54.2% (above random baseline)
+- direction_3d: accuracy = 58.3% (above random baseline)
 
 ## What Did Not Work Well
 - Small sample size (~32 events for 8 tickers × 4 quarters) limits model generalisation.
