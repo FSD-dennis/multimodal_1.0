@@ -438,3 +438,7 @@ recommended next steps is written automatically during evaluation.
 ## License
 
 Internal prototype — not for distribution.
+
+
+## more to improve
+update: create a totally new project for my new understanding of quantitative finance also new coding ability 1. new embedding model 2. better coding structure 3. better dataset understanding what i want more, so many missing data for jpmorgan and nvidia earnings report in manifest.csv my understanding for each features ... 
