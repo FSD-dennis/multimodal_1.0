@@ -311,7 +311,7 @@ signal.
 
 #### 13. `amihud_illiquidity`
 
-| | |
+| Item | Description |
 |---|---|
 | **Definition** | Amihud (2002) illiquidity ratio — average of `|daily_return| / dollar_volume` over the pre-earnings window. |
 | **Computation** | `mean(|Close[i]/Close[i-1] − 1| / (Close[i] × Volume[i]))` for `i` in `[t-20, t-1]`. |
