@@ -88,6 +88,26 @@ PRICE_FEATURES: list[str] = [
 META_COLUMNS: list[str] = ["ticker", "event_date"]
 
 # ---------------------------------------------------------------------------
+# Model selection
+# ---------------------------------------------------------------------------
+# Direction (classification) models to train.  Keys are short names used in
+# output file names and summary.  Each entry maps to a scikit-learn estimator.
+# Supported: "logistic", "random_forest", "gradient_boosting", "svm", "knn"
+DIRECTION_MODELS: list[str] = [
+    "logistic",
+    "random_forest",
+    "gradient_boosting",
+]
+
+# Magnitude (regression) models to train.
+# Supported: "ridge", "lasso", "random_forest", "gradient_boosting", "svr", "knn"
+MAGNITUDE_MODELS: list[str] = [
+    "ridge",
+    "random_forest",
+    "gradient_boosting",
+]
+
+# ---------------------------------------------------------------------------
 # Helper — ensure output directories exist
 # ---------------------------------------------------------------------------
 def ensure_output_dirs() -> None:

@@ -102,6 +102,9 @@ def evaluate_all_models(
         summary_parts.append(failure_report)
         summary_parts.append("")
 
+    # --- Model comparison tables ---
+    summary_parts.append(_model_comparison_table(all_metrics))
+
     # --- What-worked / what-failed / improvements ---
     summary_parts.append(_generate_reflections(all_metrics))
 
@@ -264,6 +267,79 @@ def _failure_analysis(
                 f"predicted={row['predicted']:+.6f}  "
                 f"error={row['error']:+.6f}\n"
             )
+
+    return buf.getvalue()
+
+
+# ---------------------------------------------------------------------------
+# Model comparison table
+# ---------------------------------------------------------------------------
+
+def _model_comparison_table(all_metrics: dict[str, dict]) -> str:
+    """Build side-by-side comparison tables for direction and magnitude models."""
+    buf = StringIO()
+    buf.write("=" * 72 + "\n")
+    buf.write("MODEL COMPARISON\n")
+    buf.write("=" * 72 + "\n\n")
+
+    # --- Direction models ---
+    dir_rows: list[tuple[str, float, float, float, float]] = []
+    for name, m in all_metrics.items():
+        if m.get("model_type") == "direction":
+            dir_rows.append((
+                name,
+                m.get("accuracy", float("nan")),
+                m.get("precision", float("nan")),
+                m.get("recall", float("nan")),
+                m.get("f1", float("nan")),
+            ))
+
+    if dir_rows:
+        buf.write("Direction models (classification):\n")
+        header = f"  {'Model':<40s} {'Acc':>7s} {'Prec':>7s} {'Rec':>7s} {'F1':>7s}"
+        buf.write(header + "\n")
+        buf.write("  " + "-" * (len(header) - 2) + "\n")
+
+        # Sort by F1 descending for easy reading
+        dir_rows.sort(key=lambda r: r[4], reverse=True)
+        best_f1 = dir_rows[0][4]
+        for name, acc, prec, rec, f1 in dir_rows:
+            marker = " ★" if f1 == best_f1 else ""
+            buf.write(
+                f"  {name:<40s} {acc:7.4f} {prec:7.4f} {rec:7.4f} {f1:7.4f}{marker}\n"
+            )
+        buf.write("\n")
+
+    # --- Magnitude models ---
+    mag_rows: list[tuple[str, float, float, float, float]] = []
+    for name, m in all_metrics.items():
+        if m.get("model_type") == "magnitude":
+            mag_rows.append((
+                name,
+                m.get("mae", float("nan")),
+                m.get("rmse", float("nan")),
+                m.get("r2", float("nan")),
+                m.get("ic", float("nan")),
+            ))
+
+    if mag_rows:
+        buf.write("Magnitude models (regression):\n")
+        header = f"  {'Model':<40s} {'MAE':>10s} {'RMSE':>10s} {'R²':>7s} {'IC':>7s}"
+        buf.write(header + "\n")
+        buf.write("  " + "-" * (len(header) - 2) + "\n")
+
+        # Sort by MAE ascending (lower is better)
+        mag_rows.sort(key=lambda r: r[1])
+        best_mae = mag_rows[0][1]
+        for name, mae, rmse, r2, ic in mag_rows:
+            marker = " ★" if mae == best_mae else ""
+            buf.write(
+                f"  {name:<40s} {mae:10.6f} {rmse:10.6f} {r2:7.4f} {ic:7.4f}{marker}\n"
+            )
+        buf.write("\n")
+
+    if not dir_rows and not mag_rows:
+        buf.write("  No models to compare.\n\n")
 
     return buf.getvalue()
 

@@ -2,7 +2,7 @@
 MULTIMODAL EARNINGS PREDICTION ENGINE — EVALUATION SUMMARY
 ========================================================================
 
---- direction_1d (Direction / Classification) ---
+--- direction_1d_logistic (Direction / Classification) ---
   Accuracy  : 0.5625
   Precision : 0.5000
   Recall    : 0.5714
@@ -39,7 +39,81 @@ weighted avg       0.57      0.56      0.56        48
     MSFT 2025-01-29 00:00:00  actual_ret=-0.0618  predicted_dir=1
 
 
---- magnitude_1d (Magnitude / Regression) ---
+--- direction_1d_random_forest (Direction / Classification) ---
+  Accuracy  : 0.6042
+  Precision : 0.5556
+  Recall    : 0.4762
+  F1 Score  : 0.5128
+  Confusion Matrix:
+    [[19  8]
+ [11 10]]
+
+  Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.63      0.70      0.67        27
+           1       0.56      0.48      0.51        21
+
+    accuracy                           0.60        48
+   macro avg       0.59      0.59      0.59        48
+weighted avg       0.60      0.60      0.60        48
+
+  Per-ticker breakdown:
+    AAPL  : n=  6  accuracy=0.667
+    AMZN  : n=  6  accuracy=0.667
+    GOOGL : n=  6  accuracy=0.500
+    JPM   : n=  6  accuracy=0.667
+    META  : n=  6  accuracy=0.333
+    MSFT  : n=  6  accuracy=0.667
+    NVDA  : n=  6  accuracy=0.667
+    TSLA  : n=  6  accuracy=0.667
+
+  Failure analysis (top-5 worst predictions):
+    TSLA 2024-10-23 00:00:00  actual_ret=+0.2192  predicted_dir=0
+    META 2025-10-29 00:00:00  actual_ret=-0.1133  predicted_dir=1
+    META 2025-07-30 00:00:00  actual_ret=+0.1125  predicted_dir=0
+    MSFT 2025-04-30 00:00:00  actual_ret=+0.0763  predicted_dir=0
+    AMZN 2026-02-05 00:00:00  actual_ret=-0.0555  predicted_dir=1
+
+
+--- direction_1d_gradient_boosting (Direction / Classification) ---
+  Accuracy  : 0.5417
+  Precision : 0.4783
+  Recall    : 0.5238
+  F1 Score  : 0.5000
+  Confusion Matrix:
+    [[15 12]
+ [10 11]]
+
+  Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.60      0.56      0.58        27
+           1       0.48      0.52      0.50        21
+
+    accuracy                           0.54        48
+   macro avg       0.54      0.54      0.54        48
+weighted avg       0.55      0.54      0.54        48
+
+  Per-ticker breakdown:
+    AAPL  : n=  6  accuracy=0.667
+    AMZN  : n=  6  accuracy=0.667
+    GOOGL : n=  6  accuracy=0.500
+    JPM   : n=  6  accuracy=0.667
+    META  : n=  6  accuracy=0.500
+    MSFT  : n=  6  accuracy=0.833
+    NVDA  : n=  6  accuracy=0.167
+    TSLA  : n=  6  accuracy=0.333
+
+  Failure analysis (top-5 worst predictions):
+    TSLA 2024-10-23 00:00:00  actual_ret=+0.2192  predicted_dir=0
+    META 2025-10-29 00:00:00  actual_ret=-0.1133  predicted_dir=1
+    META 2025-07-30 00:00:00  actual_ret=+0.1125  predicted_dir=0
+    NVDA 2025-02-26 00:00:00  actual_ret=-0.0848  predicted_dir=1
+    TSLA 2025-07-23 00:00:00  actual_ret=-0.0820  predicted_dir=1
+
+
+--- magnitude_1d_ridge (Magnitude / Regression) ---
   MAE       : 0.046114
   RMSE      : 0.061344
   R²        : -0.0469
@@ -63,7 +137,55 @@ weighted avg       0.57      0.56      0.56        48
     META 2026-01-28 00:00:00  actual=+0.104048  predicted=+0.008562  error=+0.095486
 
 
---- direction_3d (Direction / Classification) ---
+--- magnitude_1d_random_forest (Magnitude / Regression) ---
+  MAE       : 0.046805
+  RMSE      : 0.067429
+  R²        : -0.2649
+  IC (Spearman) : 0.1469  (p=0.3192)
+
+  Per-ticker breakdown:
+    AAPL  : n=  6  MAE=0.012881
+    AMZN  : n=  6  MAE=0.059090
+    GOOGL : n=  6  MAE=0.027331
+    JPM   : n=  6  MAE=0.013382
+    META  : n=  6  MAE=0.098207
+    MSFT  : n=  6  MAE=0.059227
+    NVDA  : n=  6  MAE=0.021696
+    TSLA  : n=  6  MAE=0.082624
+
+  Failure analysis (top-5 worst predictions):
+    TSLA 2024-10-23 00:00:00  actual=+0.219190  predicted=-0.028744  error=+0.247934
+    META 2025-10-29 00:00:00  actual=-0.113348  predicted=+0.103474  error=-0.216821
+    META 2025-07-30 00:00:00  actual=+0.112527  predicted=-0.004617  error=+0.117144
+    MSFT 2026-01-28 00:00:00  actual=-0.099931  predicted=+0.007845  error=-0.107776
+    META 2026-01-28 00:00:00  actual=+0.104048  predicted=+0.009060  error=+0.094988
+
+
+--- magnitude_1d_gradient_boosting (Magnitude / Regression) ---
+  MAE       : 0.059108
+  RMSE      : 0.077956
+  R²        : -0.6907
+  IC (Spearman) : 0.0994  (p=0.5013)
+
+  Per-ticker breakdown:
+    AAPL  : n=  6  MAE=0.029473
+    AMZN  : n=  6  MAE=0.080742
+    GOOGL : n=  6  MAE=0.042627
+    JPM   : n=  6  MAE=0.014314
+    META  : n=  6  MAE=0.111709
+    MSFT  : n=  6  MAE=0.058616
+    NVDA  : n=  6  MAE=0.039886
+    TSLA  : n=  6  MAE=0.095496
+
+  Failure analysis (top-5 worst predictions):
+    META 2025-10-29 00:00:00  actual=-0.113348  predicted=+0.128918  error=-0.242266
+    TSLA 2024-10-23 00:00:00  actual=+0.219190  predicted=-0.022195  error=+0.241386
+    AMZN 2025-05-01 00:00:00  actual=-0.001157  predicted=-0.134752  error=+0.133595
+    META 2025-07-30 00:00:00  actual=+0.112527  predicted=-0.003513  error=+0.116040
+    TSLA 2025-01-29 00:00:00  actual=+0.028733  predicted=-0.082484  error=+0.111217
+
+
+--- direction_3d_logistic (Direction / Classification) ---
   Accuracy  : 0.5833
   Precision : 0.5238
   Recall    : 0.5238
@@ -100,7 +222,81 @@ weighted avg       0.58      0.58      0.58        48
     MSFT 2025-01-29 00:00:00  actual_ret=-0.0710  predicted_dir=1
 
 
---- magnitude_3d (Magnitude / Regression) ---
+--- direction_3d_random_forest (Direction / Classification) ---
+  Accuracy  : 0.5000
+  Precision : 0.4118
+  Recall    : 0.3333
+  F1 Score  : 0.3684
+  Confusion Matrix:
+    [[17 10]
+ [14  7]]
+
+  Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.55      0.63      0.59        27
+           1       0.41      0.33      0.37        21
+
+    accuracy                           0.50        48
+   macro avg       0.48      0.48      0.48        48
+weighted avg       0.49      0.50      0.49        48
+
+  Per-ticker breakdown:
+    AAPL  : n=  6  accuracy=0.500
+    AMZN  : n=  6  accuracy=0.667
+    GOOGL : n=  6  accuracy=0.333
+    JPM   : n=  6  accuracy=0.500
+    META  : n=  6  accuracy=0.333
+    MSFT  : n=  6  accuracy=0.500
+    NVDA  : n=  6  accuracy=0.667
+    TSLA  : n=  6  accuracy=0.500
+
+  Failure analysis (top-5 worst predictions):
+    TSLA 2024-10-23 00:00:00  actual_ret=+0.2287  predicted_dir=0
+    TSLA 2025-04-22 00:00:00  actual_ret=+0.1974  predicted_dir=0
+    META 2025-10-29 00:00:00  actual_ret=-0.1516  predicted_dir=1
+    MSFT 2026-01-28 00:00:00  actual_ret=-0.1210  predicted_dir=1
+    META 2025-07-30 00:00:00  actual_ret=+0.1167  predicted_dir=0
+
+
+--- direction_3d_gradient_boosting (Direction / Classification) ---
+  Accuracy  : 0.5000
+  Precision : 0.4211
+  Recall    : 0.3810
+  F1 Score  : 0.4000
+  Confusion Matrix:
+    [[16 11]
+ [13  8]]
+
+  Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.55      0.59      0.57        27
+           1       0.42      0.38      0.40        21
+
+    accuracy                           0.50        48
+   macro avg       0.49      0.49      0.49        48
+weighted avg       0.49      0.50      0.50        48
+
+  Per-ticker breakdown:
+    AAPL  : n=  6  accuracy=0.500
+    AMZN  : n=  6  accuracy=0.667
+    GOOGL : n=  6  accuracy=0.333
+    JPM   : n=  6  accuracy=0.333
+    META  : n=  6  accuracy=0.500
+    MSFT  : n=  6  accuracy=0.500
+    NVDA  : n=  6  accuracy=0.667
+    TSLA  : n=  6  accuracy=0.500
+
+  Failure analysis (top-5 worst predictions):
+    TSLA 2024-10-23 00:00:00  actual_ret=+0.2287  predicted_dir=0
+    TSLA 2025-04-22 00:00:00  actual_ret=+0.1974  predicted_dir=0
+    META 2025-10-29 00:00:00  actual_ret=-0.1516  predicted_dir=1
+    MSFT 2026-01-28 00:00:00  actual_ret=-0.1210  predicted_dir=1
+    META 2025-07-30 00:00:00  actual_ret=+0.1167  predicted_dir=0
+
+
+--- magnitude_3d_ridge (Magnitude / Regression) ---
   MAE       : 0.060700
   RMSE      : 0.077548
   R²        : -0.0719
@@ -124,6 +320,79 @@ weighted avg       0.58      0.58      0.58        48
     META 2025-07-30 00:00:00  actual=+0.116742  predicted=-0.010849  error=+0.127590
 
 
+--- magnitude_3d_random_forest (Magnitude / Regression) ---
+  MAE       : 0.054620
+  RMSE      : 0.078297
+  R²        : -0.0927
+  IC (Spearman) : 0.2188  (p=0.1351)
+
+  Per-ticker breakdown:
+    AAPL  : n=  6  MAE=0.031919
+    AMZN  : n=  6  MAE=0.053712
+    GOOGL : n=  6  MAE=0.027068
+    JPM   : n=  6  MAE=0.016110
+    META  : n=  6  MAE=0.097962
+    MSFT  : n=  6  MAE=0.072113
+    NVDA  : n=  6  MAE=0.048099
+    TSLA  : n=  6  MAE=0.089978
+
+  Failure analysis (top-5 worst predictions):
+    TSLA 2024-10-23 00:00:00  actual=+0.228692  predicted=-0.019911  error=+0.248603
+    META 2025-10-29 00:00:00  actual=-0.151609  predicted=+0.063877  error=-0.215486
+    TSLA 2025-04-22 00:00:00  actual=+0.197420  predicted=-0.006361  error=+0.203781
+    META 2025-07-30 00:00:00  actual=+0.116742  predicted=-0.022486  error=+0.139227
+    META 2025-04-30 00:00:00  actual=+0.091567  predicted=-0.043220  error=+0.134787
+
+
+--- magnitude_3d_gradient_boosting (Magnitude / Regression) ---
+  MAE       : 0.063142
+  RMSE      : 0.090507
+  R²        : -0.4601
+  IC (Spearman) : 0.0580  (p=0.6955)
+
+  Per-ticker breakdown:
+    AAPL  : n=  6  MAE=0.046750
+    AMZN  : n=  6  MAE=0.064953
+    GOOGL : n=  6  MAE=0.040612
+    JPM   : n=  6  MAE=0.018236
+    META  : n=  6  MAE=0.118251
+    MSFT  : n=  6  MAE=0.083422
+    NVDA  : n=  6  MAE=0.039792
+    TSLA  : n=  6  MAE=0.093122
+
+  Failure analysis (top-5 worst predictions):
+    META 2025-10-29 00:00:00  actual=-0.151609  predicted=+0.122065  error=-0.273674
+    TSLA 2024-10-23 00:00:00  actual=+0.228692  predicted=-0.026740  error=+0.255432
+    TSLA 2025-04-22 00:00:00  actual=+0.197420  predicted=+0.000275  error=+0.197145
+    AAPL 2025-05-01 00:00:00  actual=-0.069426  predicted=+0.113623  error=-0.183050
+    META 2025-04-30 00:00:00  actual=+0.091567  predicted=-0.078268  error=+0.169835
+
+
+========================================================================
+MODEL COMPARISON
+========================================================================
+
+Direction models (classification):
+  Model                                        Acc    Prec     Rec      F1
+  ------------------------------------------------------------------------
+  direction_1d_logistic                     0.5625  0.5000  0.5714  0.5333 ★
+  direction_3d_logistic                     0.5833  0.5238  0.5238  0.5238
+  direction_1d_random_forest                0.6042  0.5556  0.4762  0.5128
+  direction_1d_gradient_boosting            0.5417  0.4783  0.5238  0.5000
+  direction_3d_gradient_boosting            0.5000  0.4211  0.3810  0.4000
+  direction_3d_random_forest                0.5000  0.4118  0.3333  0.3684
+
+Magnitude models (regression):
+  Model                                           MAE       RMSE      R²      IC
+  ------------------------------------------------------------------------------
+  magnitude_1d_ridge                         0.046114   0.061344 -0.0469  0.1245 ★
+  magnitude_1d_random_forest                 0.046805   0.067429 -0.2649  0.1469
+  magnitude_3d_random_forest                 0.054620   0.078297 -0.0927  0.2188
+  magnitude_1d_gradient_boosting             0.059108   0.077956 -0.6907  0.0994
+  magnitude_3d_ridge                         0.060700   0.077548 -0.0719  0.1493
+  magnitude_3d_gradient_boosting             0.063142   0.090507 -0.4601  0.0580
+
+
 ========================================================================
 REFLECTIONS: WHAT WORKED, WHAT FAILED, WHAT TO IMPROVE
 ========================================================================
@@ -135,8 +404,12 @@ REFLECTIONS: WHAT WORKED, WHAT FAILED, WHAT TO IMPROVE
 - Loughran-McDonald lexicon captures domain-specific language.
 - Price features (momentum, vol, gap) are standard alpha signals.
 
-- direction_1d: accuracy = 56.2% (above random baseline)
-- direction_3d: accuracy = 58.3% (above random baseline)
+- direction_1d_logistic: accuracy = 56.2% (above random baseline)
+- direction_1d_random_forest: accuracy = 60.4% (above random baseline)
+- direction_1d_gradient_boosting: accuracy = 54.2% (above random baseline)
+- direction_3d_logistic: accuracy = 58.3% (above random baseline)
+- direction_3d_random_forest: accuracy = 50.0% (at or below random baseline)
+- direction_3d_gradient_boosting: accuracy = 50.0% (at or below random baseline)
 
 ## What Did Not Work Well
 - Small sample size (~32 events for 8 tickers × 4 quarters) limits model generalisation.

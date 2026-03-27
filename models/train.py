@@ -1,9 +1,9 @@
 """
 Model training with strict chronological split.
 
-Trains four sklearn pipelines:
-- LogisticRegression (direction) × 2 horizons (1-day, 3-day)
-- Ridge regression  (magnitude) × 2 horizons
+Trains multiple sklearn pipelines per horizon, selected via ``config.py``:
+- Direction (classification): logistic, random_forest, gradient_boosting, svm, knn
+- Magnitude (regression):     ridge, lasso, random_forest, gradient_boosting, svr, knn
 """
 
 from __future__ import annotations
@@ -14,7 +14,6 @@ from pathlib import Path
 import joblib
 import numpy as np
 import pandas as pd
-from sklearn.linear_model import LogisticRegression, Ridge
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 
@@ -72,27 +71,95 @@ def chronological_split(
 
 
 # ---------------------------------------------------------------------------
-# Pipeline builders
+# Pipeline builders — direction (classification)
 # ---------------------------------------------------------------------------
 
-def _build_direction_pipeline(seed: int) -> Pipeline:
+def _build_direction_pipeline(model_key: str, seed: int) -> Pipeline:
+    """
+    Build a StandardScaler + classifier pipeline.
+
+    Supported *model_key* values:
+        logistic, random_forest, gradient_boosting, svm, knn
+    """
+    from sklearn.linear_model import LogisticRegression
+    from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
+    from sklearn.svm import SVC
+    from sklearn.neighbors import KNeighborsClassifier
+
+    estimators = {
+        "logistic": LogisticRegression(
+            random_state=seed, max_iter=1000, class_weight="balanced",
+        ),
+        "random_forest": RandomForestClassifier(
+            n_estimators=200, max_depth=6, random_state=seed,
+            class_weight="balanced", n_jobs=-1,
+        ),
+        "gradient_boosting": GradientBoostingClassifier(
+            n_estimators=200, max_depth=4, learning_rate=0.05,
+            random_state=seed,
+        ),
+        "svm": SVC(
+            kernel="rbf", probability=True, class_weight="balanced",
+            random_state=seed,
+        ),
+        "knn": KNeighborsClassifier(
+            n_neighbors=5, weights="distance", n_jobs=-1,
+        ),
+    }
+
+    if model_key not in estimators:
+        raise ValueError(
+            f"Unknown direction model '{model_key}'. "
+            f"Choose from: {list(estimators.keys())}"
+        )
+
     return Pipeline([
         ("scaler", StandardScaler()),
-        ("clf", LogisticRegression(
-            random_state=seed,
-            max_iter=1000,
-            class_weight="balanced",
-        )),
+        ("clf", estimators[model_key]),
     ])
 
 
-def _build_magnitude_pipeline(seed: int) -> Pipeline:
+# ---------------------------------------------------------------------------
+# Pipeline builders — magnitude (regression)
+# ---------------------------------------------------------------------------
+
+def _build_magnitude_pipeline(model_key: str, seed: int) -> Pipeline:
+    """
+    Build a StandardScaler + regressor pipeline.
+
+    Supported *model_key* values:
+        ridge, lasso, random_forest, gradient_boosting, svr, knn
+    """
+    from sklearn.linear_model import Ridge, Lasso
+    from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
+    from sklearn.svm import SVR
+    from sklearn.neighbors import KNeighborsRegressor
+
+    estimators = {
+        "ridge": Ridge(alpha=1.0, random_state=seed),
+        "lasso": Lasso(alpha=0.001, random_state=seed, max_iter=2000),
+        "random_forest": RandomForestRegressor(
+            n_estimators=200, max_depth=6, random_state=seed, n_jobs=-1,
+        ),
+        "gradient_boosting": GradientBoostingRegressor(
+            n_estimators=200, max_depth=4, learning_rate=0.05,
+            random_state=seed,
+        ),
+        "svr": SVR(kernel="rbf"),
+        "knn": KNeighborsRegressor(
+            n_neighbors=5, weights="distance", n_jobs=-1,
+        ),
+    }
+
+    if model_key not in estimators:
+        raise ValueError(
+            f"Unknown magnitude model '{model_key}'. "
+            f"Choose from: {list(estimators.keys())}"
+        )
+
     return Pipeline([
         ("scaler", StandardScaler()),
-        ("reg", Ridge(
-            alpha=1.0,
-            random_state=seed,
-        )),
+        ("reg", estimators[model_key]),
     ])
 
 
@@ -107,6 +174,10 @@ def train_all_models(
     """
     Train direction + magnitude models for each target horizon.
 
+    Models to train are read from ``config.DIRECTION_MODELS`` and
+    ``config.MAGNITUDE_MODELS``.  Each combination of (horizon, model_key)
+    produces one saved pipeline.
+
     Parameters
     ----------
     df : pd.DataFrame
@@ -117,7 +188,8 @@ def train_all_models(
     Returns
     -------
     dict mapping model names to dicts with keys
-    ``{"pipeline", "train_df", "test_df", "target_col", "model_type"}``.
+    ``{"pipeline", "train_df", "test_df", "target_col", "model_type",
+      "model_key"}``.
     """
     if output_dir is None:
         output_dir = config.MODELS_DIR
@@ -141,54 +213,62 @@ def train_all_models(
             logger.warning("Target column '%s' not found — skipping", target_col)
             continue
 
-        # --- Direction model (sign of return) ---
-        dir_name = f"direction_{horizon}d"
-        dir_train = train_df.dropna(subset=[target_col]).copy()
-        dir_test = test_df.dropna(subset=[target_col]).copy()
+        # --- Direction models (sign of return) ---
+        for model_key in config.DIRECTION_MODELS:
+            dir_name = f"direction_{horizon}d_{model_key}"
+            dir_train = train_df.dropna(subset=[target_col]).copy()
+            dir_test = test_df.dropna(subset=[target_col]).copy()
 
-        if len(dir_train) < 5:
-            logger.warning("Too few training samples for %s — skipping", dir_name)
-            continue
+            if len(dir_train) < 5:
+                logger.warning("Too few training samples for %s — skipping", dir_name)
+                continue
 
-        y_dir_train = (dir_train[target_col] >= 0).astype(int)
-        X_dir_train = dir_train[FEATURE_COLS].values
+            y_dir_train = (dir_train[target_col] >= 0).astype(int)
+            X_dir_train = dir_train[FEATURE_COLS].values
 
-        dir_pipe = _build_direction_pipeline(config.SEED)
-        dir_pipe.fit(X_dir_train, y_dir_train)
+            dir_pipe = _build_direction_pipeline(model_key, config.SEED)
+            dir_pipe.fit(X_dir_train, y_dir_train)
 
-        path = output_dir / f"{dir_name}.joblib"
-        joblib.dump(dir_pipe, path)
-        logger.info("Saved %s → %s", dir_name, path)
+            path = output_dir / f"{dir_name}.joblib"
+            joblib.dump(dir_pipe, path)
+            logger.info("Saved %s → %s", dir_name, path)
 
-        results[dir_name] = {
-            "pipeline": dir_pipe,
-            "train_df": dir_train,
-            "test_df": dir_test,
-            "target_col": target_col,
-            "model_type": "direction",
-        }
+            results[dir_name] = {
+                "pipeline": dir_pipe,
+                "train_df": dir_train,
+                "test_df": dir_test,
+                "target_col": target_col,
+                "model_type": "direction",
+                "model_key": model_key,
+            }
 
-        # --- Magnitude model (continuous return) ---
-        mag_name = f"magnitude_{horizon}d"
-        mag_train = train_df.dropna(subset=[target_col]).copy()
-        mag_test = test_df.dropna(subset=[target_col]).copy()
+        # --- Magnitude models (continuous return) ---
+        for model_key in config.MAGNITUDE_MODELS:
+            mag_name = f"magnitude_{horizon}d_{model_key}"
+            mag_train = train_df.dropna(subset=[target_col]).copy()
+            mag_test = test_df.dropna(subset=[target_col]).copy()
 
-        y_mag_train = mag_train[target_col].values
-        X_mag_train = mag_train[FEATURE_COLS].values
+            if len(mag_train) < 5:
+                logger.warning("Too few training samples for %s — skipping", mag_name)
+                continue
 
-        mag_pipe = _build_magnitude_pipeline(config.SEED)
-        mag_pipe.fit(X_mag_train, y_mag_train)
+            y_mag_train = mag_train[target_col].values
+            X_mag_train = mag_train[FEATURE_COLS].values
 
-        path = output_dir / f"{mag_name}.joblib"
-        joblib.dump(mag_pipe, path)
-        logger.info("Saved %s → %s", mag_name, path)
+            mag_pipe = _build_magnitude_pipeline(model_key, config.SEED)
+            mag_pipe.fit(X_mag_train, y_mag_train)
 
-        results[mag_name] = {
-            "pipeline": mag_pipe,
-            "train_df": mag_train,
-            "test_df": mag_test,
-            "target_col": target_col,
-            "model_type": "magnitude",
-        }
+            path = output_dir / f"{mag_name}.joblib"
+            joblib.dump(mag_pipe, path)
+            logger.info("Saved %s → %s", mag_name, path)
+
+            results[mag_name] = {
+                "pipeline": mag_pipe,
+                "train_df": mag_train,
+                "test_df": mag_test,
+                "target_col": target_col,
+                "model_type": "magnitude",
+                "model_key": model_key,
+            }
 
     return results
