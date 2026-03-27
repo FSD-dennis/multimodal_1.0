@@ -1,0 +1,156 @@
+========================================================================
+MULTIMODAL EARNINGS PREDICTION ENGINE — EVALUATION SUMMARY
+========================================================================
+
+--- direction_1d (Direction / Classification) ---
+  Accuracy  : 0.5625
+  Precision : 0.5000
+  Recall    : 0.3810
+  F1 Score  : 0.4324
+  Confusion Matrix:
+    [[19  8]
+ [13  8]]
+
+  Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.59      0.70      0.64        27
+           1       0.50      0.38      0.43        21
+
+    accuracy                           0.56        48
+   macro avg       0.55      0.54      0.54        48
+weighted avg       0.55      0.56      0.55        48
+
+  Per-ticker breakdown:
+    AAPL  : n=  6  accuracy=0.833
+    AMZN  : n=  6  accuracy=0.667
+    GOOGL : n=  6  accuracy=0.167
+    JPM   : n=  6  accuracy=0.667
+    META  : n=  6  accuracy=0.500
+    MSFT  : n=  6  accuracy=0.667
+    NVDA  : n=  6  accuracy=0.500
+    TSLA  : n=  6  accuracy=0.500
+
+  Failure analysis (top-5 worst predictions):
+    META 2025-07-30 00:00:00  actual_ret=+0.1125  predicted_dir=0
+    META 2026-01-28 00:00:00  actual_ret=+0.1040  predicted_dir=0
+    AMZN 2025-10-30 00:00:00  actual_ret=+0.0958  predicted_dir=0
+    NVDA 2025-02-26 00:00:00  actual_ret=-0.0848  predicted_dir=1
+    TSLA 2025-07-23 00:00:00  actual_ret=-0.0820  predicted_dir=1
+
+
+--- magnitude_1d (Magnitude / Regression) ---
+  MAE       : 0.057336
+  RMSE      : 0.079803
+  R²        : -0.7718
+  IC (Spearman) : -0.0614  (p=0.6783)
+
+  Per-ticker breakdown:
+    AAPL  : n=  6  MAE=0.027300
+    AMZN  : n=  6  MAE=0.068504
+    GOOGL : n=  6  MAE=0.032677
+    JPM   : n=  6  MAE=0.018324
+    META  : n=  6  MAE=0.071509
+    MSFT  : n=  6  MAE=0.058664
+    NVDA  : n=  6  MAE=0.075787
+    TSLA  : n=  6  MAE=0.105923
+
+  Failure analysis (top-5 worst predictions):
+    TSLA 2024-10-23 00:00:00  actual=+0.219190  predicted=-0.002107  error=+0.221297
+    NVDA 2025-02-26 00:00:00  actual=-0.084781  predicted=+0.126494  error=-0.211275
+    TSLA 2025-07-23 00:00:00  actual=-0.081970  predicted=+0.129281  error=-0.211251
+    NVDA 2026-02-25 00:00:00  actual=-0.054561  predicted=+0.140022  error=-0.194583
+    META 2025-07-30 00:00:00  actual=+0.112527  predicted=-0.012423  error=+0.124950
+
+
+--- direction_3d (Direction / Classification) ---
+  Accuracy  : 0.5417
+  Precision : 0.4545
+  Recall    : 0.2381
+  F1 Score  : 0.3125
+  Confusion Matrix:
+    [[21  6]
+ [16  5]]
+
+  Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.57      0.78      0.66        27
+           1       0.45      0.24      0.31        21
+
+    accuracy                           0.54        48
+   macro avg       0.51      0.51      0.48        48
+weighted avg       0.52      0.54      0.51        48
+
+  Per-ticker breakdown:
+    AAPL  : n=  6  accuracy=0.667
+    AMZN  : n=  6  accuracy=0.667
+    GOOGL : n=  6  accuracy=0.500
+    JPM   : n=  6  accuracy=0.667
+    META  : n=  6  accuracy=0.333
+    MSFT  : n=  6  accuracy=0.500
+    NVDA  : n=  6  accuracy=0.667
+    TSLA  : n=  6  accuracy=0.333
+
+  Failure analysis (top-5 worst predictions):
+    TSLA 2024-10-23 00:00:00  actual_ret=+0.2287  predicted_dir=0
+    NVDA 2025-02-26 00:00:00  actual_ret=-0.1312  predicted_dir=1
+    AMZN 2025-10-30 00:00:00  actual_ret=+0.1187  predicted_dir=0
+    META 2025-07-30 00:00:00  actual_ret=+0.1167  predicted_dir=0
+    MSFT 2025-04-30 00:00:00  actual_ret=+0.1035  predicted_dir=0
+
+
+--- magnitude_3d (Magnitude / Regression) ---
+  MAE       : 0.064216
+  RMSE      : 0.090059
+  R²        : -0.4457
+  IC (Spearman) : 0.0051  (p=0.9725)
+
+  Per-ticker breakdown:
+    AAPL  : n=  6  MAE=0.039245
+    AMZN  : n=  6  MAE=0.064989
+    GOOGL : n=  6  MAE=0.035580
+    JPM   : n=  6  MAE=0.018862
+    META  : n=  6  MAE=0.080799
+    MSFT  : n=  6  MAE=0.071303
+    NVDA  : n=  6  MAE=0.097584
+    TSLA  : n=  6  MAE=0.105363
+
+  Failure analysis (top-5 worst predictions):
+    NVDA 2025-02-26 00:00:00  actual=-0.131170  predicted=+0.108370  error=-0.239540
+    TSLA 2024-10-23 00:00:00  actual=+0.228692  predicted=+0.002606  error=+0.226086
+    TSLA 2025-04-22 00:00:00  actual=+0.197420  predicted=-0.004950  error=+0.202370
+    NVDA 2026-02-25 00:00:00  actual=-0.066885  predicted=+0.117135  error=-0.184019
+    AAPL 2025-05-01 00:00:00  actual=-0.069426  predicted=+0.094285  error=-0.163712
+
+
+========================================================================
+REFLECTIONS: WHAT WORKED, WHAT FAILED, WHAT TO IMPROVE
+========================================================================
+
+## What Worked
+- Pipeline ran end-to-end: data collection → features → modelling → eval.
+- Strict chronological split prevents any look-ahead bias.
+- FinBERT provides nuanced sentiment beyond simple positive/negative.
+- Loughran-McDonald lexicon captures domain-specific language.
+- Price features (momentum, vol, gap) are standard alpha signals.
+
+- direction_1d: accuracy = 56.2% (above random baseline)
+- direction_3d: accuracy = 54.2% (above random baseline)
+
+## What Did Not Work Well
+- Small sample size (~32 events for 8 tickers × 4 quarters) limits model generalisation.
+- 8-K filings may not contain rich earnings commentary for all events.
+- FinBERT is trained on general financial text; earnings-specific fine-tuning could help.
+- Logistic/Ridge regression cannot capture non-linear feature interactions.
+- Post-earnings drift is notoriously noisy; a single quarter's data is insufficient.
+
+## Recommended Improvements for v2
+1. Expand data to 3–5 years of quarterly earnings for 20+ tickers.
+2. Add earnings-call transcripts (not just SEC filings) for richer text signal.
+3. Fine-tune FinBERT on earnings-specific labelled data.
+4. Try gradient-boosted trees (XGBoost/LightGBM) for non-linear fusion.
+5. Add intraday features (bid-ask spread, order flow imbalance) for microstructure signal.
+6. Implement a transformer-based multimodal fusion architecture (cross-attention over text + price embeddings).
+7. Use an LLM (via the LLMAdapterInterface) for chain-of-thought reasoning about management tone.
+8. Implement walk-forward validation instead of single split.

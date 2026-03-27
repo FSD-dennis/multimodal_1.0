@@ -1,6 +1,7 @@
 # Outputs (generated at runtime)
-outputs/
-!outputs/summary.txt
+outputs/models/
+outputs/raw_data/
+
 # Python
 __pycache__/
 *.py[cod]
