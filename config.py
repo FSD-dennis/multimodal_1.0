@@ -23,7 +23,7 @@ TICKERS: list[str] = [
     "META", "NVDA", "TSLA", "JPM",
 ]
 
-MAX_QUARTERS: int = 10  # earnings events per ticker to fetch
+MAX_QUARTERS: int = 20  # earnings events per ticker to fetch
 
 # Trading-day window around each earnings date  (negative = before)
 EVENT_WINDOW: tuple[int, int] = (-20, 10)
@@ -45,7 +45,7 @@ TRAIN_RATIO: float = 0.70  # chronological split — first 70 % is train
 # SEC EDGAR
 # ---------------------------------------------------------------------------
 # SEC requires a descriptive User-Agent.  Replace with your own name & email.
-SEC_USER_AGENT: str = "MultimodalEarningsEngine/1.0 (research@example.com)"
+SEC_USER_AGENT: str = "MultimodalEarningsEngine/1.0 (dennisguo811@gmail.com)"
 SEC_BASE_URL: str = "https://data.sec.gov"
 SEC_TICKERS_URL: str = "https://www.sec.gov/files/company_tickers.json"
 SEC_RATE_LIMIT: float = 0.11  # seconds between requests (≈9 req/s, under 10)
