@@ -1,6 +1,6 @@
 # Outputs (generated at runtime)
 outputs/
-
+!outputs/summary.txt
 # Python
 __pycache__/
 *.py[cod]
